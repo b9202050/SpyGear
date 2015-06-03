@@ -21,17 +21,14 @@ TODO
 1. 從Raspberry官網download image ([Raspbian](http://downloads.raspberrypi.org/raspbian_latest))  
 
 2. 確認電腦有抓到SD card(假設SD card是在/dev/disk4):  
-   
-   diskutil list  
+   `diskutil list`  
    
 3. Unmount SD card:  
-   
-   diskutil unmountDisk /dev/disk4  
+   `diskutil unmountDisk /dev/disk4`  
    
 4. Build OS image to SD card:  
-   
-   sudo dd bs=1m if=2015-05-05-raspbian-wheezy.img of=/dev/disk4  
-   
+   `sudo dd bs=1m if=2015-05-05-raspbian-wheezy.img of=/dev/disk4`  
+
 ## 安裝Webcam串流模組 (mjpg-streamer)  
 0. 取得Raspberry Pi的IP (nmap)  
    
