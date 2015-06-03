@@ -12,6 +12,9 @@
 * Android手機 (Android 4.0.3或更新的版本)
 * 其它需要的電子材料，例如麵包板、麵包線、電池等
 
+## Raspberry Pi 2 Model B Spec  
+http://pi4j.com/pins/model-2b-rev1.html  
+
 ## L293D接線圖  
 
 ![](https://github.com/b9202050/SpyGear/blob/master/pi/SpyGear_L293D.jpg)  
