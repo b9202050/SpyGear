@@ -1,5 +1,5 @@
 ## 事前準備
-* Raspberry Pi
+* [Raspberry Pi 2 Model B](http://www.raspberrypi.com.tw/4063/54/)
 * 8 GB MicroSD 記憶卡
 * 行動電源 (重量越輕越好)
 * 無線USB網路卡 ([Edimax EW-7811Un](http://www.edimax.com.tw/tw/produce_detail.php?pd_id=301&pl1_id=1&pl2_id=68))
@@ -20,7 +20,7 @@ TODO
 
 1. 從Raspberry官網download image ([Raspbian](http://downloads.raspberrypi.org/raspbian_latest))  
 
-2. 確認電腦有抓到SD card(假設SD card是在/dev/disk4):  
+2. 確認電腦有抓到SD card (假設SD card是在/dev/disk4):  
    `diskutil list`  
    
 3. Unmount SD card:  
