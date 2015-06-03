@@ -68,13 +68,32 @@ TODO
    `cd mjpg-streamer`  
    `make`  
    
-5. 檢查Webcam是否有接上Raspberry Pi
-   `lsusb`
+5. 檢查Webcam是否有接上Raspberry Pi  
+   `lsusb`  
 
-## Raspberry Pi目錄結構
+## 安裝MQTT broker - Mosquitto
+0. 取得Raspberry Pi的IP (nmap)  
+   參考前面步驟  
+
+1. 登入Raspberry Pi  
+   參考前面步驟  
+
+2. 安裝Mosquitto (MQTT Broker Server)  
+   `apt-get install mosquitto`  
+
+3. 修改Raspberry Pi設定檔  
+   `sudo vi /etc/hosts`  
+
+4. 修改Raspberry Pi的IP  
+   `192.168.1.62   RaspberryPi`  
+
+5. 重啟Raspberry Pi  
+   `sudo reboot`  
+
+## Raspberry Pi目錄結構  
 
 /home/pi/  
-        ├── dist  
-        │     └──   
-        ├── mjpg_streamer  
-        └── webwork  
+      ├── dist  
+      │     └──   
+      ├── mjpg_streamer  
+      └── webwork  
