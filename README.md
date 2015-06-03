@@ -12,9 +12,9 @@
 * Android手機 (Android 4.0.3或更新的版本)
 * 其它需要的電子材料，例如麵包板、麵包線、電池等
 
-## L293D接線圖
+## L293D接線圖  
 
-TODO
+![](https://github.com/b9202050/SpyGear/blob/master/pi/SpyGear_L293D.jpg)  
 
 ## 製作Raspberry Pi OS image ([官網步驟](https://www.raspberrypi.org/documentation/installation/installing-images/mac.md))  
 
