@@ -1,7 +1,7 @@
 ## 事前準備
 * Raspberry Pi
 * 8 GB MicroSD 記憶卡
-* 行動電源(重量越輕越好)
+* 行動電源 (重量越輕越好)
 * 無線USB網路卡 ([Edimax EW-7811Un](http://www.edimax.com.tw/tw/produce_detail.php?pd_id=301&pl1_id=1&pl2_id=68))
 * 直流馬達控制晶片 ([L293D](http://www.ti.com/lit/ds/symlink/l293.pdf))
 * Webcam ([Logitech C310](http://www.logitech.com/zh-tw/product/hd-webcam-c310))
@@ -33,17 +33,17 @@ TODO
 0. 取得Raspberry Pi的IP (nmap)  
    
    安裝nmap:  
-   brew install nmap  
+   `brew install nmap`  
    
    掃整個網段:  
-   nmap -sP 192.168.1.0-255  
+   `nmap -sP 192.168.1.0-255`  
   
    掃到使用中的IP list:  
    Starting Nmap 6.47 ( http://nmap.org ) at 2015-05-06 21:32 CST  
    Strange error from connect (65):No route to host  
    Nmap scan report for router.asus.com (192.168.1.1)  
    Host is up (0.0074s latency).  
-   Nmap scan report for **raspberrypi** (192.168.1.62)  
+   Nmap scan report for **raspberrypi** (**192.168.1.62**)  
    Host is up (0.0028s latency).  
    Nmap scan report for android-194e1df1da58374f (192.168.1.80)  
    Host is up (0.049s latency).  
@@ -54,13 +54,23 @@ TODO
    Nmap done: 256 IP addresses (5 hosts up) scanned in 2.36 seconds  
    
 1. 登入Raspberry Pi  
-   ssh pi@192.168.1.62  
+   `ssh pi@192.168.1.62`  
    
 2. 安裝相關套件  
-   sudo apt-get install subversion  
-   sudo apt-get install libjpeg8-dev  
-   sudo apt-get install imagemagick  
+   `sudo apt-get install subversion`  
+   `sudo apt-get install libjpeg8-dev`  
+   `sudo apt-get install imagemagick`  
    
+3. 下載mjpg-streamer模組  
+   `svn co https://mjpg-streamer.svn.sourceforge.net/svnroot/mjpg-streamer mjpg-streamer`  
+
+4. 編譯mjpg-streamer模組  
+   `cd mjpg-streamer`  
+   `make`  
+   
+5. 檢查Webcam是否有接上Raspberry Pi
+   `lsusb`
+
 ## Raspberry Pi目錄結構
 
 /home/pi/  
