@@ -17,53 +17,36 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-public class MainActivity extends ActionBarActivity {
+import ntu.embedded.spycar.JoyStickView.OnJoystickMoveListener;
+
+public class MainActivity extends ActionBarActivity implements OnJoystickMoveListener {
+    private static final String TAG = "SpyGear";
 
     private static final int REQUEST_CONNECT = 0;
-    private boolean processMenu = false;
+    private boolean mProcessMenu = false;
 
     public static final String TOPIC = "NTU_Embedded";
     public static final String TOPIC_STATUS = "NTU_Embedded";
     public static final int QOS = 0;
     public static final int TIMEOUT = 3;
 
-    private static String clientId = "SpyCarAndroid";
-    private static MqttClient mqttClient;
+    private static String sClientId = "SpyCarAndroid";
+    private static MqttClient mMqttClient;
 
-    private JoyStickView joy_stick_view;
-    private WebView webview;
+    private JoyStickView mJoyStickView;
+    private WebView mWebview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        joy_stick_view = (JoyStickView) findViewById(R.id.joy_stick_view);
+        mJoyStickView = (JoyStickView) findViewById(R.id.joy_stick_view);
+        mJoyStickView.setOnJoystickMoveListener(this, JoyStickView.DEFAULT_LOOP_INTERVAL);
+        mJoyStickView.setEnabled(false);
 
-        JoyStickView.CallBack callBack = new JoyStickView.CallBack() {
-
-            @Override
-            public void control(ControlType action) {
-                String content = String.valueOf(action.getCode());
-
-                MqttMessage message = new MqttMessage(content.getBytes());
-                message.setQos(QOS);
-
-                try {
-                    mqttClient.publish(TOPIC, message);
-                }
-                catch (MqttException me) {
-                    Log.d(getClass().getName(), me.toString());
-                }
-            }
-
-        };
-
-        joy_stick_view.setCallBack(callBack);
-        joy_stick_view.setEnabled(false);
-
-        webview = (WebView) findViewById(R.id.webview);
-        WebSettings webSettings = webview.getSettings();
+        mWebview = (WebView) findViewById(R.id.webview);
+        WebSettings webSettings = mWebview.getSettings();
         webSettings.setJavaScriptEnabled(true);
     }
 
@@ -76,19 +59,20 @@ public class MainActivity extends ActionBarActivity {
                 String webcamIp = data.getStringExtra("webcamIp");
 
                 processConnect(brokerIp, brokerPort);
-                joy_stick_view.setEnabled(true);
-                webview.loadUrl("http://" + webcamIp + ":8080/javascript_simple.html");
+                mJoyStickView.setEnabled(true);
+                if (mWebview != null) {
+                    mWebview.loadUrl("http://" + webcamIp + ":8080/javascript_simple.html");
+                }
             }
         }
-
-        processMenu = false;
+        mProcessMenu = false;
     }
 
     @Override
     public void onDestroy() {
-        if (mqttClient != null && mqttClient.isConnected()) {
+        if (mMqttClient != null && mMqttClient.isConnected()) {
             try {
-                mqttClient.disconnect();
+                mMqttClient.disconnect();
             }
             catch (MqttException me) {
                 Log.d(getClass().getName(), me.toString());
@@ -109,16 +93,13 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         if (id == R.id.connect_menu) {
-            if (!processMenu) {
-                processMenu = true;
-
+            if (!mProcessMenu) {
+                mProcessMenu = true;
                 startActivityForResult(new Intent(this, ConnectActivity.class),
                         REQUEST_CONNECT);
             }
-
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -126,15 +107,15 @@ public class MainActivity extends ActionBarActivity {
         String broker = "tcp://" + brokerIp + ":" + brokerPort;
 
         try {
-            clientId = clientId + System.currentTimeMillis();
+            sClientId = sClientId + System.currentTimeMillis();
 
             MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
             mqttConnectOptions.setCleanSession(true);
             mqttConnectOptions.setConnectionTimeout(TIMEOUT);
 
-            mqttClient = new MqttClient(broker, clientId, new MemoryPersistence());
-            mqttClient.connect(mqttConnectOptions);
-            mqttClient.subscribe(TOPIC_STATUS);
+            mMqttClient = new MqttClient(broker, sClientId, new MemoryPersistence());
+            mMqttClient.connect(mqttConnectOptions);
+            mMqttClient.subscribe(TOPIC_STATUS);
 
             Toast.makeText(this, R.string.connected, Toast.LENGTH_LONG).show();
         }
@@ -143,4 +124,53 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    private void sendCommand(ControlType action) {
+        String content = String.valueOf(action.getCode());
+
+        MqttMessage message = new MqttMessage(content.getBytes());
+        message.setQos(QOS);
+
+        try {
+            if (mMqttClient != null) {
+                mMqttClient.publish(TOPIC, message);
+            }
+        }
+        catch (MqttException me) {
+            Log.d(getClass().getName(), me.toString());
+        }
+    }
+
+    @Override
+    public void onValueChanged(int angle, int power, int direction) {
+        Log.d(TAG, "Power="+String.valueOf(power) + " direction="+direction);
+
+        switch (direction) {
+            case JoyStickView.FRONT:
+                sendCommand(ControlType.FORWARD);
+                break;
+
+            case JoyStickView.RIGHT:
+                sendCommand(ControlType.RIGHT);
+                break;
+
+            case JoyStickView.BOTTOM:
+                sendCommand(ControlType.BACKWARD);
+                break;
+
+            case JoyStickView.LEFT:
+                sendCommand(ControlType.LEFT);
+                break;
+
+            case JoyStickView.FRONT_RIGHT:
+            case JoyStickView.RIGHT_BOTTOM:
+            case JoyStickView.BOTTOM_LEFT:
+            case JoyStickView.LEFT_FRONT:
+                // are we support this ?
+                break;
+
+            default:
+                sendCommand(ControlType.STOP);
+                return;
+        }
+    }
 }
