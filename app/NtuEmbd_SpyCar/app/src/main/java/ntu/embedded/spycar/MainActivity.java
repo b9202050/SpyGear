@@ -146,19 +146,35 @@ public class MainActivity extends ActionBarActivity implements OnJoystickMoveLis
 
         switch (direction) {
             case JoyStickView.FRONT:
-                sendCommand(ControlType.FORWARD);
+                if (power > 50) {
+                    sendCommand(ControlType.FORWARD);
+                } else {
+                    sendCommand(ControlType.FORWARD_H);
+                }
                 break;
 
             case JoyStickView.RIGHT:
-                sendCommand(ControlType.RIGHT);
+                if (power > 50) {
+                    sendCommand(ControlType.RIGHT);
+                } else {
+                    sendCommand(ControlType.RIGHT_H);
+                }
                 break;
 
             case JoyStickView.BOTTOM:
-                sendCommand(ControlType.BACKWARD);
+                if (power > 50) {
+                    sendCommand(ControlType.BACKWARD);
+                } else {
+                    sendCommand(ControlType.BACKWARD_H);
+                }
                 break;
 
             case JoyStickView.LEFT:
-                sendCommand(ControlType.LEFT);
+                if (power > 50) {
+                    sendCommand(ControlType.LEFT);
+                } else {
+                    sendCommand(ControlType.LEFT_H);
+                }
                 break;
 
             case JoyStickView.FRONT_RIGHT:
