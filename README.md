@@ -31,7 +31,39 @@ http://pi4j.com/pins/model-2b-rev1.html
    
 4. Build OS image to SD card:  
    `sudo dd bs=1m if=2015-05-05-raspbian-wheezy.img of=/dev/disk4`  
-
+   
+## 設定Edimax EW-7811Un無線網卡 ([參考網頁](http://www.savagehomeautomation.com/projects/raspberry-pi-installing-the-edimax-ew-7811un-usb-wifi-adapte.html))  
+1. 檢查network interface config  
+   `sudo vi /etc/network/interfaces`  
+   
+   確認有下面這幾行:  
+   auto wlan0  
+   allow-hotplug wlan0  
+   iface wlan0 inet manual  
+   wpa-roam /etc/wpa_supplicant/wpa_supplicant.conf  
+   
+2. 設定wifi config  
+   `sudo vi /etc/wpa_supplicant/wpa_supplicant.conf`  
+   
+   設定格式如下:  
+   network={  
+      ssid="**mySSID**"  
+      proto=WPA  
+      key_mgmt=WPA-PSK  
+      pairwise=CCMP TKIP  
+      group=CCMP TKIP  
+      psk="**myPassword**"  
+   }  
+   
+3. 重新啟動wlan  
+   `sudo ifdown wlan0`  
+   `sudo ifup wlan0`  
+   
+   重新啟動後, 可能會出現下面訊息(忽略)  
+   ioctl [SIOCSIWAP] : operation not permitted  
+   ioctl [SIOCSIWENCODEEXT] : invalid argument  
+   ioctl [SIOCSIWENCODEEXT] : invalid argument  
+   
 ## 安裝Webcam串流模組 (mjpg-streamer)  
 0. 取得Raspberry Pi的IP (nmap)  
    
@@ -48,11 +80,11 @@ http://pi4j.com/pins/model-2b-rev1.html
    Host is up (0.0074s latency).  
    Nmap scan report for **raspberrypi** (**192.168.1.62**)  
    Host is up (0.0028s latency).  
-   Nmap scan report for android-194e1df1da58374f (192.168.1.80)  
+   Nmap scan report for android-194e (192.168.1.80)  
    Host is up (0.049s latency).  
-   Nmap scan report for dd-mac (192.168.1.82)  
+   Nmap scan report for my-mac (192.168.1.82)  
    Host is up (0.00028s latency).  
-   Nmap scan report for android-25b5d7efb5511880 (192.168.1.102)  
+   Nmap scan report for android-25b5 (192.168.1.102)  
    Host is up (0.042s latency).  
    Nmap done: 256 IP addresses (5 hosts up) scanned in 2.36 seconds  
    
