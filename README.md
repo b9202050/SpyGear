@@ -12,6 +12,10 @@
 * Android手機 (Android 4.0.3或更新的版本)
 * 其它需要的電子材料，例如麵包板、麵包線、電池等
 
+## 開發環境
+* [Java SE 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+* [NetBeans](https://netbeans.org/downloads/)
+
 ## Raspberry Pi 2 Model B Spec  
 http://pi4j.com/pins/model-2b-rev1.html  
 
@@ -128,7 +132,26 @@ http://pi4j.com/pins/model-2b-rev1.html
 ## Raspberry Pi目錄結構  
 
 /home/pi/  
-      ├── dist  
-      │     └──   
-      ├── mjpg_streamer  
-      └── webwork  
+   ├── dist             <-- MQTT message  
+   │     └──   
+   ├── mjpg_streamer    <-- Webcam  
+   └── webwork  
+
+## 啟動mjpg_streamer服務  
+   
+   `cd ~/mjpg_streamer`  
+   `./mjpg_streamer -i "./input_uvc.so -y  -r QVGA -f 15" -o "./output_http.so -w ./www"`  
+   
+   丟到背景執行  
+   `Ctrl + Z`  
+   
+   切換到背景  
+   `bg`  
+   
+   切換到前景  
+   `fg`  
+   
+## 啟動MQTT服務  
+   
+   `cd ~/dist`  
+   `sudo java -jar SpyGearPi.jar`  
