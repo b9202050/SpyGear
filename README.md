@@ -130,13 +130,16 @@ http://pi4j.com/pins/model-2b-rev1.html
    `sudo reboot`  
 
 ## Raspberry Pi目錄結構  
-
+   
 /home/pi/  
-   ├── dist             <-- MQTT message  
-   │     └──   
-   ├── mjpg_streamer    <-- Webcam  
+   ├── dist  <-- MQTT message  
+   ├── mjpg_streamer  <-- Webcam  
    └── webwork  
-
+   
+## 複製SpyGearPi到Raspberry Pi  
+   
+   `scp SpyGear.jar pi@192.168.1.62:/home/pi/dist/`  
+   
 ## 啟動mjpg_streamer服務  
    
    `cd ~/mjpg_streamer`  
@@ -151,7 +154,7 @@ http://pi4j.com/pins/model-2b-rev1.html
    切換到前景  
    `fg`  
    
-## 啟動MQTT服務  
+## 啟動SpyGearPi  
    
    `cd ~/dist`  
    `sudo java -jar SpyGearPi.jar`  
