@@ -2,8 +2,9 @@ package spygearpi;
 
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
-import com.pi4j.io.gpio.GpioPinDigitalOutput;
-import com.pi4j.io.gpio.RaspiPin;
+//import com.pi4j.io.gpio.GpioPinDigitalOutput;
+//import com.pi4j.io.gpio.RaspiPin;
+//import com.pi4j.wiringpi.SoftPwm;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -36,6 +37,7 @@ public class SpyGearPi {
         // Create Pi4J GpioController object
         final GpioController gpio = GpioFactory.getInstance();
         
+        /*
         // Create left DC motor GPIO pin object
         final GpioPinDigitalOutput pin01 = 
                 gpio.provisionDigitalOutputPin(RaspiPin.GPIO_21); //01
@@ -47,6 +49,12 @@ public class SpyGearPi {
                 gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00); //00
         final GpioPinDigitalOutput pin02 = 
                 gpio.provisionDigitalOutputPin(RaspiPin.GPIO_02); //02
+        */
+        
+        // left DC motor pin
+        final int pin01 = 21, pin03 = 22;
+        // right DC motor pin
+        final int pin00 = 0, pin02 = 2;
                 
         // Create L293D DC motor control object
         L293D l293d = new L293D(pin01, pin03, pin00, pin02);
@@ -60,7 +68,7 @@ public class SpyGearPi {
         
             @Override
             public void connectionLost(Throwable throwable) {
-                System.out.println("SpyGearPi Disconnect...");
+                System.out.println("TurtleCarPi Disconnect...");
             }
 
             @Override
@@ -80,12 +88,12 @@ public class SpyGearPi {
                         l293d.rightBackward();
                         break;
                     // Turn left
-                    case "R":
+                    case "L":
                         l293d.leftBackward();
                         l293d.rightForward();
                         break;
                     // Turn right
-                    case "L":
+                    case "R":
                         l293d.leftForward();
                         l293d.rightBackward();
                         break;
@@ -93,6 +101,26 @@ public class SpyGearPi {
                     case "S":
                         l293d.leftStop();
                         l293d.rightStop();
+                        break;
+                    // Forward Half
+                    case "f":
+                        l293d.leftForward_H();
+                        l293d.rightForward_H();
+                        break;
+                    // Backward Half
+                    case "b":
+                        l293d.leftBackward_H();
+                        l293d.rightBackward_H();
+                        break;
+                    // Turn left Half
+                    case "l":
+                        l293d.leftBackward_H();
+                        l293d.rightForward_H();
+                        break;
+                    // Turn right Half
+                    case "r":
+                        l293d.leftForward_H();
+                        l293d.rightBackward_H();
                         break;
                     // Exit    
                     case "E":
