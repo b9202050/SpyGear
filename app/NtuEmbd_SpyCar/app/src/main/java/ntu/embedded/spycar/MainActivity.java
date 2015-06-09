@@ -25,12 +25,12 @@ public class MainActivity extends ActionBarActivity implements OnJoystickMoveLis
     private static final int REQUEST_CONNECT = 0;
     private boolean mProcessMenu = false;
 
-    public static final String TOPIC = "NTU_Embedded";
-    public static final String TOPIC_STATUS = "NTU_Embedded";
+    public static final String TOPIC = "NtuSpyGear";
+    public static final String TOPIC_STATUS = "NtuSpyGear";
     public static final int QOS = 0;
     public static final int TIMEOUT = 3;
 
-    private static String sClientId = "SpyCarAndroid";
+    private static String sClientId = "NtuSpyGearId";
     private static MqttClient mMqttClient;
 
     private JoyStickView mJoyStickView;
@@ -133,6 +133,8 @@ public class MainActivity extends ActionBarActivity implements OnJoystickMoveLis
         try {
             if (mMqttClient != null) {
                 mMqttClient.publish(TOPIC, message);
+            } else {
+                Log.w(TAG, "mMqttClient is null, abort publish message");
             }
         }
         catch (MqttException me) {

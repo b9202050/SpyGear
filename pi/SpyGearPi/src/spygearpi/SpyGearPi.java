@@ -12,13 +12,13 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 public class SpyGearPi {
     
     // MQTT topic
-    private static final String TOPIC = "SpyGear";
+    private static final String TOPIC = "NtuSpyGear";
     // MQTT broker ip
     private static String broker_host = "192.168.0.104";
     // MQTT broker port
     private static String broker_port = "1883";
     // MQTT client id
-    private static final String clientId = "SpyGearPi";
+    private static final String clientId = "NtuSpyGearId";
     
     private static boolean exit = false;
 

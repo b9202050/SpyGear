@@ -6,7 +6,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 
-public class Utils {
+public class  Utils {
 
     private static SharedPreferences sp = null;
 
