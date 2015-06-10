@@ -68,7 +68,7 @@ public class SpyGearPi {
         
             @Override
             public void connectionLost(Throwable throwable) {
-                System.out.println("TurtleCarPi Disconnect...");
+                System.out.println("SpyGearPi Disconnect...");
             }
 
             @Override
