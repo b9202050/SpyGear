@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # start web cam via mjpg_streamer in background
-push ~/mjpg_streamer
+pushd ~/mjpg-streamer
 	./mjpg_streamer -i "./input_uvc.so -y -r QVGA -f 15" -o "./output_http.so -w ./www" &
-pop
+popd
 
 # start SpyGearPi in background
-push ~/dist
+pushd ~/dist
 	sudo java -jar SpyGearPi.jar &
-pop
+popd
 
 echo "=================="
 echo "SpyGear"
