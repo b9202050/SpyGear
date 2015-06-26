@@ -26,11 +26,11 @@ public class MainActivity extends ActionBarActivity implements OnJoystickMoveLis
     private boolean mProcessMenu = false;
 
     public static final String TOPIC = "NtuSpyGear";
-    public static final String TOPIC_STATUS = "NtuSpyGear";
+    public static final String TOPIC_STATUS = "NtuSpyGearData";
     public static final int QOS = 0;
     public static final int TIMEOUT = 3;
 
-    private static String sClientId = "NtuSpyGearId";
+    private static String sClientId = "NtuSpyGearAndroid";
     private static MqttClient mMqttClient;
 
     private JoyStickView mJoyStickView;
@@ -73,8 +73,7 @@ public class MainActivity extends ActionBarActivity implements OnJoystickMoveLis
         if (mMqttClient != null && mMqttClient.isConnected()) {
             try {
                 mMqttClient.disconnect();
-            }
-            catch (MqttException me) {
+            } catch (MqttException me) {
                 Log.d(getClass().getName(), me.toString());
             }
         }
@@ -118,8 +117,7 @@ public class MainActivity extends ActionBarActivity implements OnJoystickMoveLis
             mMqttClient.subscribe(TOPIC_STATUS);
 
             Toast.makeText(this, R.string.connected, Toast.LENGTH_LONG).show();
-        }
-        catch (MqttException me) {
+        } catch (MqttException me) {
             Toast.makeText(this, R.string.connect_failure, Toast.LENGTH_LONG).show();
         }
     }
@@ -136,15 +134,14 @@ public class MainActivity extends ActionBarActivity implements OnJoystickMoveLis
             } else {
                 Log.w(TAG, "mMqttClient is null, abort publish message");
             }
-        }
-        catch (MqttException me) {
+        } catch (MqttException me) {
             Log.d(getClass().getName(), me.toString());
         }
     }
 
     @Override
     public void onValueChanged(int angle, int power, int direction) {
-        Log.d(TAG, "Power="+String.valueOf(power) + " direction="+direction);
+        Log.d(TAG, "Power=" + String.valueOf(power) + " direction=" + direction);
 
         switch (direction) {
             case JoyStickView.FRONT:

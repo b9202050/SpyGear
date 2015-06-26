@@ -40,6 +40,7 @@ public class JoyStickView extends View implements Runnable {
     private boolean mEnable = false;
 
     private OnJoystickMoveListener mOnJoystickMoveListener; // Listener
+
     public interface OnJoystickMoveListener {
         void onValueChanged(int angle, int power, int direction);
     }

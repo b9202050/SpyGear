@@ -14,11 +14,11 @@ public class SpyGearPi {
     // MQTT topic
     private static final String TOPIC = "NtuSpyGear";
     // MQTT broker ip
-    private static String broker_host = "192.168.0.104";
+    private static String broker_host = "192.168.8.1";
     // MQTT broker port
     private static String broker_port = "1883";
     // MQTT client id
-    private static final String clientId = "NtuSpyGearId";
+    private static final String clientId = "NtuSpyGearPi";
     
     private static boolean exit = false;
 

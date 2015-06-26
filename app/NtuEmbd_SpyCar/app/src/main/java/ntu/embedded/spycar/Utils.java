@@ -6,7 +6,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 
-public class  Utils {
+public class Utils {
 
     private static SharedPreferences sp = null;
 
@@ -22,7 +22,7 @@ public class  Utils {
      */
     public static String getBrokerIP(Context context) {
         return getSharedPreferences(context).getString(KEY_BROKER_IP,
-                "192.168.1.51");
+                "192.168.8.1");
     }
 
     /**
@@ -38,14 +38,14 @@ public class  Utils {
 
     public static String getWebcamIP(Context context) {
         return getSharedPreferences(context).getString(KEY_WEBCAM_IP,
-                "192.168.1.202");
+                "192.168.8.1");
     }
 
     /**
      * Save MQTT broker IP Address
      *
      * @param context Android Context
-     * @param ip MQTT broker IP Address
+     * @param ip      MQTT broker IP Address
      */
     public static void saveBrokerIP(Context context, String ip) {
         SharedPreferences.Editor editor =
@@ -77,8 +77,7 @@ public class  Utils {
     private static SharedPreferences getSharedPreferences(Context context) {
         if (sp == null) {
             return PreferenceManager.getDefaultSharedPreferences(context);
-        }
-        else {
+        } else {
             return sp;
         }
     }

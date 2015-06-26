@@ -59,9 +59,9 @@ public class ConnectActivity extends Activity {
     }
 
     private void processViews() {
-        ip_textview = (EditText)findViewById(R.id.ip_textview);
-        port_textview = (EditText)findViewById(R.id.port_textview);
-        webcam_ip_textview = (EditText)findViewById(R.id.webcam_ip_textview);
+        ip_textview = (EditText) findViewById(R.id.ip_textview);
+        port_textview = (EditText) findViewById(R.id.port_textview);
+        webcam_ip_textview = (EditText) findViewById(R.id.webcam_ip_textview);
 
         ip_textview.setText(Utils.getBrokerIP(this));
         port_textview.setText(Utils.getBrokerPort(this));
