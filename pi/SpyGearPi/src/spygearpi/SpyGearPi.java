@@ -57,7 +57,7 @@ public class SpyGearPi {
         final int pin00 = 0, pin02 = 2;
                 
         // Create L293D DC motor control object
-        L293D l293d = new L293D(pin01, pin03, pin00, pin02);
+        final L293D l293d = new L293D(pin01, pin03, pin00, pin02);
         
         // Create MQTT service object
         final MqttService service = 
