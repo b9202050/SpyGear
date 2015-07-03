@@ -1,5 +1,5 @@
 ## 影片
-[Spy Gear](https://www.youtube.com/watch?v=uO9ye1er5FY)
+[![IMAGE ALT TEXT HERE](http://img.youtube.com/vi/uO9ye1er5FY/0.jpg)](https://www.youtube.com/watch?v=uO9ye1er5FY)
 
 ## 事前準備
 * [Raspberry Pi 2 Model B](http://www.raspberrypi.com.tw/4063/54/)
