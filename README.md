@@ -1,3 +1,6 @@
+## 影片
+[Spy Gear](https://www.youtube.com/watch?v=uO9ye1er5FY)
+
 ## 事前準備
 * [Raspberry Pi 2 Model B](http://www.raspberrypi.com.tw/4063/54/)
 * 8 GB MicroSD 記憶卡
