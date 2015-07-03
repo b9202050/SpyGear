@@ -186,7 +186,7 @@ http://pi4j.com/pins/model-2b-rev1.html
 	option domain-name "local";
 	option domain-name-servers 8.8.8.8, 8.8.4.4;
 	}	
-``` 
+	``` 
    
 3. 讓wireless module成為預設DHCP device
 
@@ -206,7 +206,7 @@ http://pi4j.com/pins/model-2b-rev1.html
 	
 	並修改設定檔如下：
 	
-```
+	```
 	interface=wlan0
 	#driver=nl80211
 	driver=rtl871xdrv
@@ -221,15 +221,15 @@ http://pi4j.com/pins/model-2b-rev1.html
 	wpa_key_mgmt=WPA-PSK
 	wpa_pairwise=TKIP
 	rsn_pairwise=CCMP
-```
+	```
 
 5. 設定router table
 
-```
+	```
 	sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 	sudo iptables -A FORWARD -i eth0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT
 	sudo iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
-```
+	```
 
 6. sudo reboot
 
