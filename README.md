@@ -36,37 +36,209 @@ http://pi4j.com/pins/model-2b-rev1.html
 4. Build OS image to SD card:  
    `sudo dd bs=1m if=2015-05-05-raspbian-wheezy.img of=/dev/disk4`  
    
-## 設定Edimax EW-7811Un無線網卡 ([參考網頁](http://www.savagehomeautomation.com/projects/raspberry-pi-installing-the-edimax-ew-7811un-usb-wifi-adapte.html))  
+## 設定Edimax EW-7811Un無線網卡為hotspot ([參考網頁](http://www.savagehomeautomation.com/projects/raspberry-pi-installing-the-edimax-ew-7811un-usb-wifi-adapte.html))  
 1. 檢查network interface config  
    `sudo vi /etc/network/interfaces`  
    
-   確認有下面這幾行:  
-   auto wlan0  
-   allow-hotplug wlan0  
-   iface wlan0 inet manual  
-   wpa-roam /etc/wpa_supplicant/wpa_supplicant.conf  
+	修改內容如下：
+	
+	```
+	auto lo
+	iface lo inet loopback
+
+	iface eth0 inet dhcp
+
+	#auto wlan0
+	allow-hotplug wlan0
+	#iface wlan0 inet manual
+	#wpa-roam /etc/wpa_supplicant/wpa_supplicant.conf
+
+	iface wlan0 inet static
+	address 192.168.8.1
+	netmask 255.255.255.0
+	gateway 192.168.1.1
+
+	#iface default inet dhcp
+	pre-up iptables-restore < /etc/iptables.ipv4.nat
+	```
+2.  安裝DHCP server
+
+	`sudo apt-get install isc-dhcp-server`  
+   `sudo vi /etc/dhcp/dhcpd.conf`
    
-2. 設定wifi config  
-   `sudo vi /etc/wpa_supplicant/wpa_supplicant.conf`  
+	修改內容如下：
+	
+	```
+	#
+	# Sample configuration file for ISC dhcpd for Debian
+	#
+	#
+
+	# The ddns-updates-style parameter controls whether or not the server will
+	# attempt to do a DNS update when a lease is confirmed. We default to the
+	# behavior of the version 2 packages ('none', since DHCP v2 didn't
+	# have support for DDNS.)
+	ddns-update-style none;
+
+	# option definitions common to all supported networks...
+	#option domain-name "example.org";
+	#option domain-name-servers ns1.example.org, ns2.example.org;
+
+	default-lease-time 600;
+	max-lease-time 7200;
+
+	# If this DHCP server is the official DHCP server for the local
+	# network, the authoritative directive should be uncommented.
+	authoritative;
+
+	# Use this to send dhcp log messages to a different log file (you also
+	# have to hack syslog.conf to complete the redirection).
+	log-facility local7;
+
+	# No service will be given on this subnet, but declaring it helps the
+	# DHCP server to understand the network topology.
+
+	#subnet 10.152.187.0 netmask 255.255.255.0 {
+	#}
+
+	# This is a very basic subnet declaration.
+
+	#subnet 10.254.239.0 netmask 255.255.255.224 {
+	#  range 10.254.239.10 10.254.239.20;
+	#  option routers rtr-239-0-1.example.org, rtr-239-0-2.example.org;
+	#}
+
+	# This declaration allows BOOTP clients to get dynamic addresses,
+	# which we don't really recommend.
+
+	#subnet 10.254.239.32 netmask 255.255.255.224 {
+	#  range dynamic-bootp 10.254.239.40 10.254.239.60;
+	#  option broadcast-address 10.254.239.31;
+	#  option routers rtr-239-32-1.example.org;
+	#}
+
+	# A slightly different configuration for an internal subnet.
+	#subnet 10.5.5.0 netmask 255.255.255.224 {
+	#  range 10.5.5.26 10.5.5.30;
+	#  option domain-name-servers ns1.internal.example.org;
+	#  option domain-name "internal.example.org";
+	#  option routers 10.5.5.1;
+	#  option broadcast-address 10.5.5.31;
+	#  default-lease-time 600;
+	#  max-lease-time 7200;
+	#}
+
+	# Hosts which require special configuration options can be listed in
+	# host statements.   If no address is specified, the address will be
+	# allocated dynamically (if possible), but the host-specific information
+	# will still come from the host declaration.
+
+	#host passacaglia {
+	#  hardware ethernet 0:0:c0:5d:bd:95;
+	#  filename "vmunix.passacaglia";
+	#  server-name "toccata.fugue.com";
+	#}
+
+	# Fixed IP addresses can also be specified for hosts.   These addresses
+	# should not also be listed as being available for dynamic assignment.
+	# Hosts for which fixed IP addresses have been specified can boot using
+	# BOOTP or DHCP.   Hosts for which no fixed address is specified can only
+	# be booted with DHCP, unless there is an address range on the subnet
+	# to which a BOOTP client is connected which has the dynamic-bootp flag
+	# set.
+	#host fantasia {
+	#  hardware ethernet 08:00:07:26:c0:a5;
+	#  fixed-address fantasia.fugue.com;
+	#}
+
+	# You can declare a class of clients and then do address allocation
+	# based on that.   The example below shows a case where all clients
+	# in a certain class get addresses on the 10.17.224/24 subnet, and all
+	# other clients get addresses on the 10.0.29/24 subnet.
+
+	#class "foo" {
+	#  match if substring (option vendor-class-identifier, 0, 4) = "SUNW";
+	#}
+
+	#shared-network 224-29 {
+	#  subnet 10.17.224.0 netmask 255.255.255.0 {
+	#    option routers rtr-224.example.org;
+	#  }
+	#  subnet 10.0.29.0 netmask 255.255.255.0 {
+	#    option routers rtr-29.example.org;
+	#  }
+	#  pool {
+	#    allow members of "foo";
+	#    range 10.17.224.10 10.17.224.250;
+	#  }
+	#  pool {
+	#    deny members of "foo";
+	#    range 10.0.29.10 10.0.29.230;
+	#  }
+	#}
+
+	subnet 192.168.8.0 netmask 255.255.255.0 {
+	range 192.168.8.10 192.168.8.50;
+	option broadcast-address 192.168.8.255;
+	option routers 192.168.8.1;
+	default-lease-time 600;
+	max-lease-time 7200;
+	option domain-name "local";
+	option domain-name-servers 8.8.8.8, 8.8.4.4;
+	}	
+``` 
    
-   設定格式如下:  
-   network={  
-      ssid="**mySSID**"  
-      proto=WPA  
-      key_mgmt=WPA-PSK  
-      pairwise=CCMP TKIP  
-      group=CCMP TKIP  
-      psk="**myPassword**"  
-   }  
-   
-3. 重新啟動wlan  
-   `sudo ifdown wlan0`  
-   `sudo ifup wlan0`  
-   
-   重新啟動後, 可能會出現下面訊息(忽略)  
-   ioctl [SIOCSIWAP] : operation not permitted  
-   ioctl [SIOCSIWENCODEEXT] : invalid argument  
-   ioctl [SIOCSIWENCODEEXT] : invalid argument  
+3. 讓wireless module成為預設DHCP device
+
+	`sudo nano /etc/default/isc-dhcp-server`
+	
+	修改 `INTERFACES=""` 變成 `INTERFACES="wlan0"`
+	
+	重啟DHCP server
+	
+	`sudo service isc-dhcp-server restart`
+
+4. 安裝 access point daemon
+	
+	`sudo apt-get install hostapd`
+	
+	`sudo vi /etc/hostapd/hostapd.conf`	
+	
+	並修改設定檔如下：
+	
+```
+	interface=wlan0
+	#driver=nl80211
+	driver=rtl871xdrv
+	ssid=SpyGear
+	hw_mode=g
+	channel=6
+	macaddr_acl=0
+	auth_algs=1
+	ignore_broadcast_ssid=0
+	wpa=2
+	wpa_passphrase=12345678
+	wpa_key_mgmt=WPA-PSK
+	wpa_pairwise=TKIP
+	rsn_pairwise=CCMP
+```
+
+5. 設定router table
+
+```
+	sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+	sudo iptables -A FORWARD -i eth0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+	sudo iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
+```
+
+6. sudo reboot
+
+	即可透過如下資訊連上Pi  
+	
+	```
+	SSID: SpyGear
+	Password: 12345678
+	```
    
 ## 安裝Webcam串流模組 (mjpg-streamer)  
 0. 取得Raspberry Pi的IP (nmap)  
